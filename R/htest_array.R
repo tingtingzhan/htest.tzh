@@ -75,7 +75,7 @@ outer.cor.test <- function(X, Y = X, ...) {
 }
 
 
-#' @title R Markdown Script of [htest_array]
+#' @title Markdown Script of [htest_array]
 #' 
 #' @description ..
 #' 
@@ -86,10 +86,10 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' @param ... additional parameters, currently not in use
 #' 
 #' @returns 
-#' Function [rmd_.htest_array] returns a \link[base]{character} \link[base]{vector}.
+#' Function [md_.htest_array] returns a \link[base]{character} \link[base]{vector}.
 #' 
 #' @export
-rmd_.htest_array <- function(x, xnm, ...) c(
+md_.htest_array <- function(x, xnm, ...) c(
   '```{r results = \'asis\'}', 
   sprintf(fmt = '%s$estimate |> as_flextable.array() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
   sprintf(fmt = '%s$p.value |> format_pval() |> as_flextable.array() |> set_caption(caption = \'p-values\')', xnm), 
@@ -111,7 +111,7 @@ p_adjust_.htest_array <- function(x) {
   pv0 <- x$p.value
   dnm <- dimnames(pv0)
   pv <- c(pv0)
-  names(pv) <- c(outer(dnm[[1L]], dnm[[2L]], FUN = function(...) paste(..., sep = ' & ')))
+  names(pv) <- c(outer(dnm[[1L]], dnm[[2L]], FUN = \(...) paste(..., sep = ' & ')))
   ret <- p_adjust_.numeric(pv) # 'matrix'
   names(dimnames(ret)) <- c(x$method, '') # for ?as_flextable.array
   return(ret)
