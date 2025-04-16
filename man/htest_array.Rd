@@ -13,7 +13,7 @@ outer.cor.test(X, Y = X, ...)
 \item{...}{additional parameters of \link[stats]{cor.test}}
 }
 \value{
-Function \link{outer.cor.test} returns a \link{htest_array} object.
+Function \code{\link[=outer.cor.test]{outer.cor.test()}} returns a \link{htest_array} object.
 }
 \description{
 ..
@@ -35,3 +35,4 @@ m$estimate |> as_flextable()
 m$p.value |> format_pval() |> as_flextable()
 m |> p_adjust_.htest_array() |> format_pval() |> as_flextable()
 }
+\keyword{internal}

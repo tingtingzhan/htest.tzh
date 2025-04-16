@@ -12,3 +12,4 @@
 \description{
 Adjusted \eqn{p}-values for \link{htest_array}
 }
+\keyword{internal}

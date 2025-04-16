@@ -7,15 +7,16 @@
 md_.htest_array(x, xnm, ...)
 }
 \arguments{
-\item{x}{a \link{htest_array}}
+\item{x}{an \link{htest_array} object}
 
 \item{xnm}{\link[base]{character} scalar, call of \code{x}}
 
 \item{...}{additional parameters, currently not in use}
 }
 \value{
-Function \link{md_.htest_array} returns a \link[base]{character} \link[base]{vector}.
+Function \code{\link[=md_.htest_array]{md_.htest_array()}} returns a \link[base]{character} \link[base]{vector}.
 }
 \description{
 ..
 }
+\keyword{internal}

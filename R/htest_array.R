@@ -12,7 +12,7 @@
 #' @details .. 
 #' 
 #' @returns 
-#' Function [outer.cor.test] returns a [htest_array] object.
+#' Function [outer.cor.test()] returns a [htest_array] object.
 #' 
 #' @note
 #' This is a factorial structure of `xc`-by-`yc`
@@ -27,6 +27,7 @@
 #' m$estimate |> as_flextable()
 #' m$p.value |> format_pval() |> as_flextable()
 #' m |> p_adjust_.htest_array() |> format_pval() |> as_flextable()
+#' @keywords internal
 #' @importFrom stats cor.test 
 #' @name htest_array
 #' @export
@@ -79,18 +80,21 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' 
 #' @description ..
 #' 
-#' @param x a [htest_array]
+#' @param x an [htest_array] object
 #' 
 #' @param xnm \link[base]{character} scalar, call of `x`
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
 #' @returns 
-#' Function [md_.htest_array] returns a \link[base]{character} \link[base]{vector}.
+#' Function [md_.htest_array()] returns a \link[base]{character} \link[base]{vector}.
 #' 
+#' @keywords internal
 #' @export
 md_.htest_array <- function(x, xnm, ...) c(
-  '```{r results = \'asis\'}', 
+  # '```{r results = \'asis\'}', 
+  '```{r}', 
+  '#| results: asis',
   sprintf(fmt = '%s$estimate |> as_flextable.array() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
   sprintf(fmt = '%s$p.value |> format_pval() |> as_flextable.array() |> set_caption(caption = \'p-values\')', xnm), 
   sprintf(fmt = '%s |> p_adjust_.htest_array() |> format_pval() |> as_flextable.array() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
@@ -104,6 +108,7 @@ md_.htest_array <- function(x, xnm, ...) c(
 #' 
 #' @param x a [htest_array] object
 #' 
+#' @keywords internal
 #' @importFrom flextable.tzh p_adjust_ p_adjust_.numeric
 #' @export p_adjust_.htest_array
 #' @export
