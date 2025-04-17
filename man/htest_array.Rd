@@ -34,5 +34,10 @@ library(flextable.tzh)
 m$estimate |> as_flextable()
 m$p.value |> format_pval() |> as_flextable()
 m |> p_adjust_.htest_array() |> format_pval() |> as_flextable()
+
+library(rmd.tzh); list(
+ '`htest_array`' = m
+) |> render_(file = 'htest_array')
+
 }
 \keyword{internal}

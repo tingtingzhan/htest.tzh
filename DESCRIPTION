@@ -6,7 +6,7 @@ Date: 2024-01-15
 Description: Tingting's extension to rmarkdown package.
 License: GPL-2
 Encoding: UTF-8
-Imports: flextable.tzh
+Imports: flextable.tzh, rmd.tzh
 Authors@R: c(person(given = "Tingting", family = "Zhan", role = c("aut", "cre"), email = c("tingtingzhan@gmail.com")))
 Language: en-US
 Roxygen: list(markdown = TRUE)

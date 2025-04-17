@@ -27,6 +27,11 @@
 #' m$estimate |> as_flextable()
 #' m$p.value |> format_pval() |> as_flextable()
 #' m |> p_adjust_.htest_array() |> format_pval() |> as_flextable()
+#' 
+#' library(rmd.tzh); list(
+#'  '`htest_array`' = m
+#' ) |> render_(file = 'htest_array')
+#' 
 #' @keywords internal
 #' @importFrom stats cor.test 
 #' @name htest_array
@@ -90,6 +95,7 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' Function [md_.htest_array()] returns a \link[base]{character} \link[base]{vector}.
 #' 
 #' @keywords internal
+#' @importFrom rmd.tzh md_
 #' @export
 md_.htest_array <- function(x, xnm, ...) c(
   # '```{r results = \'asis\'}', 

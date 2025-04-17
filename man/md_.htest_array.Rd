@@ -4,7 +4,7 @@
 \alias{md_.htest_array}
 \title{Markdown Script of \link{htest_array}}
 \usage{
-md_.htest_array(x, xnm, ...)
+\method{md_}{htest_array}(x, xnm, ...)
 }
 \arguments{
 \item{x}{an \link{htest_array} object}
