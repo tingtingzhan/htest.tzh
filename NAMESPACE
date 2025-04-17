@@ -2,6 +2,7 @@
 
 S3method(md_,htest_array)
 S3method(p_adjust_,htest_array)
+export(md_.htest_array)
 export(outer.cor.test)
 export(p_adjust_.htest_array)
 importFrom(flextable.tzh,p_adjust_)

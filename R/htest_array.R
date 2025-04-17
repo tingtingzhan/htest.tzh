@@ -96,6 +96,7 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' 
 #' @keywords internal
 #' @importFrom rmd.tzh md_
+#' @export md_.htest_array
 #' @export
 md_.htest_array <- function(x, xnm, ...) c(
   # '```{r results = \'asis\'}', 
