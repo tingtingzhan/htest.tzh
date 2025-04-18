@@ -24,9 +24,10 @@
 #' y = matrix(rnorm(30), ncol = 3, dimnames = list(NULL, letters[1:3]))
 #' m = outer.cor.test(x, y) # do no have print method yet
 #' library(flextable.tzh)
+#' library(scales.tzh)
 #' m$estimate |> as_flextable()
-#' m$p.value |> format_pval() |> as_flextable()
-#' m |> p_adjust_.htest_array() |> format_pval() |> as_flextable()
+#' m$p.value |> label_pvalue_sym()() |> as_flextable()
+#' m |> p_adjust_.htest_array() |> label_pvalue_sym()() |> as_flextable()
 #' 
 #' library(rmd.tzh); list(
 #'  '`htest_array`' = m
@@ -48,15 +49,6 @@ outer.cor.test <- function(X, Y = X, ...) {
   
   # ?stats:::cor.test.default errs on different lengths of `x` and `y`
   if (nrow(x) != nrow(y)) stop('')
-  
-  #fn <- function(i, j, ...) {
-  #  tmp <- cor.test(x = x[,i], y = y[,j], ...)
-  #  est <- tmp$estimate |>
-  #    sprintf(fmt = '%.3f') |>
-  #    sub(pattern = '([-]?)0[.]', replacement = '\\1.') 
-  #  return(paste0(est, ' (', format_pval(tmp$p.value), ')'))
-  #}
-  # ret <- outer(X = seq_len(nx), Y = seq_len(ny), FUN = fn) # why does not work??
   
   statistic <- estimate <- p.value <- array(0, dim = c(nx, ny), dimnames = list(xc, yc))
   for (i in seq_len(nx)) {
@@ -103,8 +95,8 @@ md_.htest_array <- function(x, xnm, ...) c(
   '```{r}', 
   '#| results: asis',
   sprintf(fmt = '%s$estimate |> as_flextable.array() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
-  sprintf(fmt = '%s$p.value |> format_pval() |> as_flextable.array() |> set_caption(caption = \'p-values\')', xnm), 
-  sprintf(fmt = '%s |> p_adjust_.htest_array() |> format_pval() |> as_flextable.array() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
+  sprintf(fmt = '%s$p.value |> scales.tzh::label_pvalue_sym()() |> as_flextable.array() |> set_caption(caption = \'p-values\')', xnm), 
+  sprintf(fmt = '%s |> p_adjust_.htest_array() |> scales.tzh::label_pvalue_sym()() |> as_flextable.array() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
   '```', 
   '<any-text>'
 )
