@@ -31,6 +31,7 @@ x = matrix(rnorm(50), ncol = 5, dimnames = list(NULL, LETTERS[1:5]))
 y = matrix(rnorm(30), ncol = 3, dimnames = list(NULL, letters[1:3]))
 m = outer.cor.test(x, y) # do no have print method yet
 library(flextable.tzh)
+library(flextable)
 library(scales.tzh)
 m$estimate |> as_flextable()
 m$p.value |> label_pvalue_sym()() |> as_flextable()
