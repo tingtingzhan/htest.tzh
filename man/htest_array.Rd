@@ -34,8 +34,8 @@ library(flextable.tzh)
 library(flextable)
 library(scales.tzh)
 m$estimate |> as_flextable()
-m$p.value |> label_pvalue_sym()() |> as_flextable()
-m |> p_adjust_.htest_array() |> label_pvalue_sym()() |> as_flextable()
+m$p.value |> label_pvalue_sym(add_p = TRUE)() |> as_flextable()
+m |> p_adjust_.htest_array() |> label_pvalue_sym(add_p = TRUE)() |> as_flextable()
 
 library(rmd.tzh); list(
  '`htest_array`' = m

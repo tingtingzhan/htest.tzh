@@ -2,8 +2,8 @@ Package: htest.tzh
 Type: Package
 Title: htest.tzh
 Version: 0.1.0
-Date: 2025-04-28
-Description: Tingting's extension to rmarkdown package.
+Date: 2025-05-15
+Description: Tingting's extension to htest objects from package stats.
 License: GPL-2
 Encoding: UTF-8
 Authors@R: c(person(given = "Tingting", family = "Zhan", role = c("aut", "cre"), email = c("tingtingzhan@gmail.com")))
