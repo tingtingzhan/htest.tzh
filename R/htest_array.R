@@ -99,7 +99,8 @@ md_.htest_array <- function(x, xnm, ...) c(
   sprintf(fmt = '%s$p.value |> scales.tzh::label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'p-values\')', xnm), 
   sprintf(fmt = '%s |> p_adjust_.htest_array() |> scales.tzh::label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
   '```', 
-  '<any-text>'
+  '<any-text>',
+  '\n\n'
 )
 
 
