@@ -23,12 +23,6 @@
 #' x = matrix(rnorm(50), ncol = 5, dimnames = list(NULL, LETTERS[1:5]))
 #' y = matrix(rnorm(30), ncol = 3, dimnames = list(NULL, letters[1:3]))
 #' m = outer.cor.test(x, y) # do no have print method yet
-#' library(flextable.tzh)
-#' library(flextable)
-#' library(scales.tzh)
-#' m$estimate |> as_flextable()
-#' m$p.value |> label_pvalue_sym(add_p = TRUE)() |> as_flextable()
-#' m |> p_adjust_.htest_array() |> label_pvalue_sym(add_p = TRUE)() |> as_flextable()
 #' 
 #' library(rmd.tzh); list(
 #'  '`htest_array`' = m
@@ -88,20 +82,22 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' Function [md_.htest_array()] returns a \link[base]{character} \link[base]{vector}.
 #' 
 #' @keywords internal
+#' @importFrom methods new
 #' @importFrom rmd.tzh md_
+#' @importClassesFrom rmd.tzh md_lines
 #' @export md_.htest_array
 #' @export
-md_.htest_array <- function(x, xnm, ...) c(
-  # '```{r results = \'asis\'}', 
-  '```{r}', 
-  '#| results: asis',
-  sprintf(fmt = '%s$estimate |> as_flextable.matrix() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
-  sprintf(fmt = '%s$p.value |> scales.tzh::label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'p-values\')', xnm), 
-  sprintf(fmt = '%s |> p_adjust_.htest_array() |> scales.tzh::label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
-  '```', 
-  '<any-text>',
-  '\n\n'
-)
+md_.htest_array <- function(x, xnm, ...) {
+  c(
+    '```{r}', 
+    '#| results: asis',
+    sprintf(fmt = '%s$estimate |> as_flextable.matrix() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
+    sprintf(fmt = '%s$p.value |> label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'p-values\')', xnm), 
+    sprintf(fmt = '%s |> p_adjust_.htest_array() |> label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
+    '```'
+  ) |> 
+    new(Class = 'md_lines')
+}
 
 
 
