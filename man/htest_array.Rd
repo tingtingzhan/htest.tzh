@@ -26,14 +26,9 @@ This is a factorial structure of \code{xc}-by-\code{yc}
 \emph{not} a pairwise \emph{combination} of \code{x}.
 }
 \examples{
-set.seed(100)
-x = matrix(rnorm(50), ncol = 5, dimnames = list(NULL, LETTERS[1:5]))
-y = matrix(rnorm(30), ncol = 3, dimnames = list(NULL, letters[1:3]))
-m = outer.cor.test(x, y) # do no have print method yet
-
-library(rmd.tzh); list(
- '`htest_array`' = m
-) |> render_(file = 'htest_array')
+list(
+ '`htest_array`' = outer.cor.test(swiss)
+) |> rmd.tzh::render_(file = 'htest_array')
 
 }
 \keyword{internal}

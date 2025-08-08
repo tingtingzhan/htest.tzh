@@ -19,14 +19,9 @@
 #' *not* a pairwise *combination* of `x`.
 #' 
 #' @examples 
-#' set.seed(100)
-#' x = matrix(rnorm(50), ncol = 5, dimnames = list(NULL, LETTERS[1:5]))
-#' y = matrix(rnorm(30), ncol = 3, dimnames = list(NULL, letters[1:3]))
-#' m = outer.cor.test(x, y) # do no have print method yet
-#' 
-#' library(rmd.tzh); list(
-#'  '`htest_array`' = m
-#' ) |> render_(file = 'htest_array')
+#' list(
+#'  '`htest_array`' = outer.cor.test(swiss)
+#' ) |> rmd.tzh::render_(file = 'htest_array')
 #' 
 #' @keywords internal
 #' @importFrom stats cor.test 
@@ -62,15 +57,79 @@ outer.cor.test <- function(X, Y = X, ...) {
   tmp$p.value <- p.value
   tmp$estimate <- estimate
   tmp$data.name <- DNAME
-  class(tmp) <- c('htest_array', class(tmp))
+  class(tmp) <- 'htest_array'
   return(tmp)
+  
+  # as of R 4.5.1,
+  # ?stats:::print.htest requires `$p.value` being a scalar
+  # therefore, we shouldnt have 'htest_array' inherits from 'htest'
+  # !!!!
+}
+
+
+#' @title [as_flextable.htest_array]
+#' 
+#' @param x ..
+#' 
+#' @param which ..
+#' 
+#' @param ... ..
+#' 
+#' @keywords internal
+#' @importFrom flextable as_flextable set_caption
+#' @importFrom flextable.tzh as_flextable.matrix
+#' @importFrom rmd.tzh label_pvalue_sym
+#' @export
+as_flextable.htest_array <- function(x, which = c('estimate', 'p.value', 'p.adjust'), ...) {
+  
+  match.arg(which) |>
+    switch(EXPR = _, estimate = {
+      x$estimate |> 
+        as_flextable.matrix()
+    }, p.value = {
+      x$p.value |> 
+        label_pvalue_sym()() |> 
+        as_flextable.matrix() |> 
+        set_caption(caption = 'p-values') 
+    }, p.adjust = {
+      x |> 
+        p_adjust_.htest_array() |> 
+        unclass() |> 
+        label_pvalue_sym()() |> 
+        as_flextable.matrix() |> 
+        set_caption(caption = 'Multiple Testing Adjusted p-values') 
+    })
   
 }
 
 
-#' @title Markdown Script of [htest_array]
+
+#' @title print `htest_array`
 #' 
-#' @description ..
+#' @param x ..
+#' 
+#' @keywords internal
+#' @export print.htest_array
+#' @export
+print.htest_array <- function(x, ...) {
+  
+  x |> 
+    as_flextable.htest_array(which = 'estimate') |> 
+    print()
+  
+  x |> 
+    as_flextable.htest_array(which = 'p.value') |> 
+    print()
+  
+  x |> 
+    as_flextable.htest_array(which = 'p.adjust') |> 
+    print()
+  
+}
+
+
+
+#' @title Markdown Script of [htest_array]
 #' 
 #' @param x an [htest_array] object
 #' 
@@ -90,10 +149,10 @@ outer.cor.test <- function(X, Y = X, ...) {
 md_.htest_array <- function(x, xnm, ...) {
   c(
     '```{r}', 
-    '#| results: asis',
-    sprintf(fmt = '%s$estimate |> as_flextable.matrix() |> set_caption(caption = \'Correlation Coefficients\')', xnm),
-    sprintf(fmt = '%s$p.value |> label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'p-values\')', xnm), 
-    sprintf(fmt = '%s |> p_adjust_.htest_array() |> label_pvalue_sym()() |> as_flextable.matrix() |> set_caption(caption = \'Multiple Testing Adjusted p-values\')', xnm), 
+    '#| echo: false',
+    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'estimate\')'),
+    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.value\')'),
+    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')'),
     '```'
   ) |> 
     new(Class = 'md_lines')

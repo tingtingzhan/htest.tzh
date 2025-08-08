@@ -17,6 +17,6 @@
 Function \code{\link[=md_.htest_array]{md_.htest_array()}} returns a \link[base]{character} \link[base]{vector}.
 }
 \description{
-..
+Markdown Script of \link{htest_array}
 }
 \keyword{internal}
