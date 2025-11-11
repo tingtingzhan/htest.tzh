@@ -21,9 +21,24 @@
 #' binom_confint(0:10, 10L, alternative = 'less') |> as_flextable()
 #' binom_confint(0:10, 10L, alternative = 'greater') |> as_flextable()
 #' @keywords internal
+#' @name binom_confint
 #' @importFrom stats binom.test
 #' @export
-binom_confint <- function(x, n, conf.level = .95, alternative = c('two.sided', 'less', 'greater'), ...) {
+binom_confint <- function(x, ...) UseMethod(generic = 'binom_confint')
+  
+#' @rdname binom_confint
+#' @examples
+#' state.region |> binom_confint() |> as_flextable()
+#' @export binom_confint.default
+#' @export
+binom_confint.factor <- function(x, ...) {
+  binom_confint.default(x = c(table(x)), n = length(x), ...)
+}
+  
+#' @rdname binom_confint
+#' @export binom_confint.default
+#' @export
+binom_confint.default <- function(x, n, conf.level = .95, alternative = c('two.sided', 'less', 'greater'), ...) {
   
   if (!is.integer(x) || !length(x) || anyNA(x)) stop('x must be integer')
   if (!is.integer(n) || !length(n) || anyNA(n) || any(n <= 0L)) stop('n must be positive integer')
@@ -58,7 +73,8 @@ binom_confint <- function(x, n, conf.level = .95, alternative = c('two.sided', '
     vapply(FUN = `[[`, 'parameter', FUN.VALUE = NA_real_) |>
     as.integer()
   
-  class(cint) <- 'binom_confint'
+  class(cint) <- c('binom_confint', class(cint)) |>
+    unique.default()
   return(cint)
   
 }
@@ -81,7 +97,6 @@ as_flextable.binom_confint <- function(x, ...) {
   
   x <- attr(obj, which = 'x', exact = TRUE)
   n <- attr(obj, which = 'n', exact = TRUE)
-  nm <- attr(obj, which = 'nm', exact = TRUE)
   conf.level <- attr(obj, which = 'conf.level', exact = TRUE)
   alternative <- attr(obj, which = 'alternative', exact = TRUE)
   
@@ -91,6 +106,7 @@ as_flextable.binom_confint <- function(x, ...) {
   )
   names(d)[2L] <- sprintf(fmt = 'Percentage\n(%.f%% %s-Sided Exact CI)', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
   
+  nm <- rownames(obj)
   if (length(nm)) d <- data.frame(Name = nm, d, check.names = FALSE)
   
   d |>
@@ -129,14 +145,14 @@ viewBinomCI <- function(x) {
   
   x_ <- x[id]
   o <- order(x_, decreasing = TRUE)
+  .x <- x_[o]
+  names(.x) <- nm[id][o]
   
-  ret <- binom_confint(
-    x = x_[o], 
+  binom_confint(
+    x = .x, 
     n = n
-  )
-  attr(ret, which = 'nm') <- nm[id][o]
-  
-  as_flextable.binom_confint(ret)
+  ) |>
+    as_flextable.binom_confint()
   
 }
 

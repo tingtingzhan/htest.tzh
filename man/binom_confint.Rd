@@ -2,9 +2,15 @@
 % Please edit documentation in R/binom_confint.R
 \name{binom_confint}
 \alias{binom_confint}
+\alias{binom_confint.factor}
+\alias{binom_confint.default}
 \title{Clopper-Pearson Exact Binomial Confidence Interval}
 \usage{
-binom_confint(
+binom_confint(x, ...)
+
+\method{binom_confint}{factor}(x, ...)
+
+\method{binom_confint}{default}(
   x,
   n,
   conf.level = 0.95,
@@ -32,5 +38,6 @@ library(flextable)
 binom_confint(0:10, 10L) |> as_flextable()
 binom_confint(0:10, 10L, alternative = 'less') |> as_flextable()
 binom_confint(0:10, 10L, alternative = 'greater') |> as_flextable()
+state.region |> binom_confint() |> as_flextable()
 }
 \keyword{internal}
