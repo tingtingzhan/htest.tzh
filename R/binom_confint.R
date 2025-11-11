@@ -88,7 +88,7 @@ binom_confint.default <- function(x, n, conf.level = .95, alternative = c('two.s
 #' @param ... ..
 #' 
 #' @keywords internal
-#' @importFrom flextable as_flextable flextable autofit
+#' @importFrom flextable as_flextable flextable autofit align vline
 #' @export as_flextable.binom_confint
 #' @export
 as_flextable.binom_confint <- function(x, ...) {
@@ -111,7 +111,9 @@ as_flextable.binom_confint <- function(x, ...) {
   
   d |>
     flextable() |>
-    autofit(part = 'all')
+    autofit(part = 'all') |>
+    align(j = if (length(nm)) 2:3 else 1:2, align = 'right', part = 'all') |>
+    vline(j = if (length(nm)) 1L)
   
 }
 
@@ -153,6 +155,51 @@ viewBinomCI <- function(x) {
     n = n
   ) |>
     as_flextable.binom_confint()
+  
+}
+
+
+
+
+
+
+#' @title md_.binom_confint
+#' 
+#' @description ..
+#' 
+#' @param x a [binom_confint]
+#' 
+#' @param xnm ..
+#'  
+#' @param ... ..
+#' 
+#' @examples
+#' list(
+#'  'State Region' = state.region |> binom_confint()
+#' ) |> rmd.tzh::render_(file = 'binom_confint')
+#' @keywords internal
+#' @importFrom methods new
+#' @importClassesFrom rmd.tzh md_lines  
+#' @importFrom rmd.tzh md_
+#' @export md_.binom_confint
+#' @export
+md_.binom_confint <- function(x, xnm, ...) {
+  
+  #z1 <- x$call$formula[[2L]] |> 
+  #  deparse1() |> 
+  #  sprintf(fmt = '@KaplanMeier58 estimates and curves of time-to-event endpoint **`%s`** are obtained using <u>**`R`**</u> package <u>**`survival`**</u>.') |>
+  #  new(Class = 'md_lines', package = 'survival', bibentry = KaplanMeier58())
+  
+  z2 <- c(
+    '```{r}',
+    '#| echo: false', 
+    xnm |> sprintf(fmt = 'as_flextable.binom_confint(%s)'),
+    '```'
+  ) |> 
+    new(Class = 'md_lines')
+  
+  #c(z1, z2) # ?rmd.tzh::c.md_lines
+  return(z2)
   
 }
 
