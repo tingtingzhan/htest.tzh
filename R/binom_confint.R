@@ -48,7 +48,7 @@ binom_confint.default <- function(x, n, conf.level = .95, alternative = c('two.s
   
   ht <- mapply(
     FUN = binom.test, 
-    x = x, n = n, # this is not compute intensive; no need to fully vectorize
+    x = x, n = n, # not compute intensive; no need to fully vectorize
     MoreArgs = list(
       conf.level = conf.level,
       alternative = alternative
@@ -102,9 +102,10 @@ as_flextable.binom_confint <- function(x, ...) {
   
   d <- data.frame(
     Count = sprintf(fmt = '%d / %d', x, n),
-    sprintf(fmt = '%.1f%% (%.1f%%, %.1f%%)', 1e2*(x/n), 1e2*obj[,1L], 1e2*obj[,2L])
+    Percentage = sprintf(fmt = '%.1f%%', 1e2*(x/n)),
+    sprintf(fmt = '(%.1f%%, %.1f%%)', 1e2*obj[,1L], 1e2*obj[,2L])
   )
-  names(d)[2L] <- sprintf(fmt = 'Percentage\n(%.f%% %s-Sided Exact CI)', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
+  names(d)[3L] <- sprintf(fmt = '%.f%% %s-Sided Exact\nConfidence Interval', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
   
   nm <- rownames(obj)
   if (length(nm)) d <- data.frame(Name = nm, d, check.names = FALSE)
@@ -112,8 +113,8 @@ as_flextable.binom_confint <- function(x, ...) {
   d |>
     flextable() |>
     autofit(part = 'all') |>
-    align(j = if (length(nm)) 2:3 else 1:2, align = 'right', part = 'all') |>
-    vline(j = if (length(nm)) 1L)
+    align(j = if (length(nm)) 2:4 else 1:3, align = 'right', part = 'all') |>
+    vline(j = if (length(nm)) 1L else integer())
   
 }
 
