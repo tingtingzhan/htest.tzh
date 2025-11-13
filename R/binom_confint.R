@@ -11,15 +11,14 @@
 #' @param conf.level,alternative,... additional parameters of function \link[stats]{binom.test}
 #' 
 #' @returns 
-#' Function [binom_confint()] returns an S3 class `'binom_confint'`, 
+#' The `S3` methods of the generic function [binom_confint()] returns an `S3` class `'binom_confint'`, 
 #' which is a \link[base]{matrix} with additional \link[base]{attributes}
 #' `'conf.level'`, `'alternative'`, `'x'` and `'n'`.
 #' 
 #' @examples 
-#' library(flextable)
-#' binom_confint(0:10, 10L) |> as_flextable()
-#' binom_confint(0:10, 10L, alternative = 'less') |> as_flextable()
-#' binom_confint(0:10, 10L, alternative = 'greater') |> as_flextable()
+#' binom_confint(0:10, 10L)
+#' binom_confint(0:10, 10L, alternative = 'less')
+#' binom_confint(0:10, 10L, alternative = 'greater')
 #' @keywords internal
 #' @name binom_confint
 #' @importFrom stats binom.test
@@ -28,12 +27,46 @@ binom_confint <- function(x, ...) UseMethod(generic = 'binom_confint')
   
 #' @rdname binom_confint
 #' @examples
-#' state.region |> binom_confint() |> as_flextable()
+#' state.region |> binom_confint()
 #' @export binom_confint.default
 #' @export
 binom_confint.factor <- function(x, ...) {
   binom_confint.default(x = c(table(x)), n = length(x), ...)
 }
+
+
+#' @rdname binom_confint
+#' @examples 
+#' swiss |> is.na() |> binom_confint() # no missing
+#' airquality |> is.na() |> binom_confint() 
+#' @keywords internal
+#' @export binom_confint.matrix
+#' @export
+binom_confint.matrix <- function(x, ...) {
+  
+  obj <- x; x <- NULL
+  if (!is.matrix(obj) || !is.logical(obj)) stop('input must be `logical` `matrix`')
+  
+  # percentages *by column*
+  
+  x <- obj |> colSums() |> as.integer()
+  id <- (x > 0L)
+  if (!any(id)) return(invisible())
+  
+  #x_ <- x[id]
+  #o <- order(x_, decreasing = TRUE)
+  #.x <- x_[o]
+  #names(.x) <- nm[id][o]
+  #binom_confint.default(x = .x, n = n, ...)
+  
+  binom_confint.default(x = setNames(x[id], nm = colnames(obj)[id]), n = nrow(obj), ...)
+
+}
+
+
+
+
+
   
 #' @rdname binom_confint
 #' @export binom_confint.default
@@ -80,6 +113,48 @@ binom_confint.default <- function(x, n, conf.level = .95, alternative = c('two.s
 }
 
 
+#' @title Sort [binom_confint]
+#' 
+#' @description
+#' Sort a [binom_confint] by count `x`, if the sample size `n` is the same.
+#' 
+#' @param x [binom_confint]
+#' 
+#' @param decreasing,... parameters of function \link[base]{order}
+#' 
+#' @examples
+#' penguins |> is.na() |> binom_confint()
+#' penguins |> is.na() |> binom_confint() |> sort()
+#' 
+#' @keywords internal
+#' @export sort.binom_confint
+#' @export
+sort.binom_confint <- function(x, decreasing = TRUE, ...) {
+  
+  obj <- x; x <- NULL
+  
+  n <- obj |>
+    attr(which = 'n', exact = TRUE)
+  if (!all(duplicated.default(n)[-1L])) {
+    warning('cannot sort if not all `n`s are equal')
+    return(x) # exception handling
+  }
+  
+  x <- obj |>
+    attr(which = 'x', exact = TRUE)
+  
+  o <- order(x, decreasing = decreasing, ...)
+  
+  z <- obj
+  z[] <- z[o, , drop = FALSE]
+  rownames(z) <- rownames(obj)[o] # is.null(rownames(obj)) compatible
+  attr(z, which = 'x') <- x[o]
+  return(z)
+  
+}
+
+
+
 
 #' @title Convert [binom_confint] to \link[flextable]{flextable}
 #' 
@@ -120,45 +195,12 @@ as_flextable.binom_confint <- function(x, ...) {
 
 
 
-
-
-
-#' @title View Binomial Confidence Interval
-#' 
-#' @description ..
-#' 
-#' @param x a \link[base]{logical} \link[base]{matrix}
-#'
-#' @examples 
-#' swiss |> is.na() |> viewBinomCI() # no missing
-#' airquality |> is.na() |> viewBinomCI()
-#' @keywords internal
 #' @export
-viewBinomCI <- function(x) {
-  
-  obj <- x; x <- NULL
-  if (!is.matrix(obj) || !is.logical(obj)) stop('input must be `logical` `matrix`')
-  
-  x <- obj |> colSums() |> as.integer()
-  id <- (x > 0L)
-  if (!any(id)) return(invisible())
-  
-  n <- obj |> nrow()
-  nm <- obj |> colnames()
-  
-  x_ <- x[id]
-  o <- order(x_, decreasing = TRUE)
-  .x <- x_[o]
-  names(.x) <- nm[id][o]
-  
-  binom_confint(
-    x = .x, 
-    n = n
-  ) |>
-    as_flextable.binom_confint()
-  
+print.binom_confint <- function(x, ...) {
+  x |>
+    as_flextable.binom_confint(...) |>
+    print() # ?flextable:::print.flextable
 }
-
 
 
 
@@ -176,7 +218,7 @@ viewBinomCI <- function(x) {
 #' 
 #' @examples
 #' list(
-#'  'State Region' = state.region |> binom_confint()
+#'  'State Region' = state.region |> binom_confint() |> sort()
 #' ) |> rmd.tzh::render_(file = 'binom_confint')
 #' @keywords internal
 #' @importFrom methods new

@@ -3,12 +3,15 @@
 \name{binom_confint}
 \alias{binom_confint}
 \alias{binom_confint.factor}
+\alias{binom_confint.matrix}
 \alias{binom_confint.default}
 \title{Clopper-Pearson Exact Binomial Confidence Interval}
 \usage{
 binom_confint(x, ...)
 
 \method{binom_confint}{factor}(x, ...)
+
+\method{binom_confint}{matrix}(x, ...)
 
 \method{binom_confint}{default}(
   x,
@@ -26,7 +29,7 @@ binom_confint(x, ...)
 \item{conf.level, alternative, ...}{additional parameters of function \link[stats]{binom.test}}
 }
 \value{
-Function \code{\link[=binom_confint]{binom_confint()}} returns an S3 class \code{'binom_confint'},
+The \code{S3} methods of the generic function \code{\link[=binom_confint]{binom_confint()}} returns an \code{S3} class \code{'binom_confint'},
 which is a \link[base]{matrix} with additional \link[base]{attributes}
 \code{'conf.level'}, \code{'alternative'}, \code{'x'} and \code{'n'}.
 }
@@ -34,10 +37,11 @@ which is a \link[base]{matrix} with additional \link[base]{attributes}
 Clopper-Pearson exact binomial confidence interval.
 }
 \examples{
-library(flextable)
-binom_confint(0:10, 10L) |> as_flextable()
-binom_confint(0:10, 10L, alternative = 'less') |> as_flextable()
-binom_confint(0:10, 10L, alternative = 'greater') |> as_flextable()
-state.region |> binom_confint() |> as_flextable()
+binom_confint(0:10, 10L)
+binom_confint(0:10, 10L, alternative = 'less')
+binom_confint(0:10, 10L, alternative = 'greater')
+state.region |> binom_confint()
+swiss |> is.na() |> binom_confint() # no missing
+airquality |> is.na() |> binom_confint() 
 }
 \keyword{internal}

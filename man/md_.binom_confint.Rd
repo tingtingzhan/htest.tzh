@@ -18,7 +18,7 @@
 }
 \examples{
 list(
- 'State Region' = state.region |> binom_confint()
+ 'State Region' = state.region |> binom_confint() |> sort()
 ) |> rmd.tzh::render_(file = 'binom_confint')
 }
 \keyword{internal}
