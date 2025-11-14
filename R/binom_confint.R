@@ -53,12 +53,6 @@ binom_confint.matrix <- function(x, ...) {
   id <- (x > 0L)
   if (!any(id)) return(invisible())
   
-  #x_ <- x[id]
-  #o <- order(x_, decreasing = TRUE)
-  #.x <- x_[o]
-  #names(.x) <- nm[id][o]
-  #binom_confint.default(x = .x, n = n, ...)
-  
   binom_confint.default(x = setNames(x[id], nm = colnames(obj)[id]), n = nrow(obj), ...)
 
 }
