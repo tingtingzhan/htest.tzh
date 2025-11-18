@@ -11,7 +11,7 @@ binom_confint(x, ...)
 
 \method{binom_confint}{factor}(x, ...)
 
-\method{binom_confint}{matrix}(x, ...)
+\method{binom_confint}{matrix}(x, n = c("col", "row"), ...)
 
 \method{binom_confint}{default}(
   x,

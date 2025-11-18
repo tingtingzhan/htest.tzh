@@ -42,21 +42,26 @@ binom_confint.factor <- function(x, ...) {
 #' @keywords internal
 #' @export binom_confint.matrix
 #' @export
-binom_confint.matrix <- function(x, ...) {
+binom_confint.matrix <- function(x, n = c('col', 'row'), ...) {
   
   obj <- x; x <- NULL
   if (!is.matrix(obj) || !is.logical(obj)) stop('input must be `logical` `matrix`')
   
-  # percentages *by column*
-  
-  x <- obj |> colSums() |> as.integer()
-  id <- (x > 0L)
-  if (!any(id)) return(invisible())
-  
-  binom_confint.default(x = setNames(x[id], nm = colnames(obj)[id]), n = nrow(obj), ...)
+  switch(EXPR = match.arg(n), col = {
+    obj |> 
+      colSums() |> # percentages *by column*
+      as.integer() |> 
+      setNames(nm = colnames(obj)) |>
+      binom_confint.default(n = nrow(obj), ...)
+  }, row = {
+    obj |> 
+      rowSums() |> # percentages *by row*
+      as.integer() |> 
+      setNames(nm = rownames(obj)) |>
+      binom_confint.default(n = ncol(obj), ...)
+  })
 
 }
-
 
 
 
@@ -107,6 +112,62 @@ binom_confint.default <- function(x, n, conf.level = .95, alternative = c('two.s
 }
 
 
+
+#' @title Subset [binom_confint]
+#' 
+#' @description
+#' Subset a [binom_confint].
+#' 
+#' @param x [binom_confint]
+#' 
+#' @param subset \link[base]{language}
+#' 
+#' @param ... additional parameters, currently of no use
+#' 
+#' @examples
+#' (cint = penguins |> is.na() |> binom_confint())
+#' cint |> 
+#'   subset(subset = x > 0L) |>
+#'   sort()
+#' 
+#' @keywords internal
+#' @export subset.binom_confint
+#' @export
+subset.binom_confint <- function(x, subset, ...) {
+  
+  if (missing(subset)) return(x) # exception handling
+  
+  obj <- x; x <- NULL
+  x <- obj |>
+    attr(which = 'x', exact = TRUE)
+  
+  e <- substitute(subset)
+  id <- eval(e) # only allow `x` in `subset`
+  return(obj[id]) # `[.binom_confint`
+  
+}
+
+
+#' @export
+`[.binom_confint` <- function(x, i) {
+  z <- unclass(x)[i, , drop = FALSE]
+  attr(z, which = 'conf.level') <- attr(x, which = 'conf.level', exact = TRUE)
+  attr(z, which = 'alternative') <- attr(x, which = 'alternative', exact = TRUE)
+  attr(z, which = 'x') <- attr(x, which = 'x', exact = TRUE)[i]
+  attr(z, which = 'n') <- attr(x, which = 'n', exact = TRUE)[i]
+  class(z) <- c('binom_confint', class(z)) |>
+    unique.default()
+  return(z)
+}
+
+
+
+
+
+
+
+
+
 #' @title Sort [binom_confint]
 #' 
 #' @description
@@ -134,16 +195,10 @@ sort.binom_confint <- function(x, decreasing = TRUE, ...) {
     return(x) # exception handling
   }
   
-  x <- obj |>
-    attr(which = 'x', exact = TRUE)
-  
-  o <- order(x, decreasing = decreasing, ...)
-  
-  z <- obj
-  z[] <- z[o, , drop = FALSE]
-  rownames(z) <- rownames(obj)[o] # is.null(rownames(obj)) compatible
-  attr(z, which = 'x') <- x[o]
-  return(z)
+  o <- obj |>
+    attr(which = 'x', exact = TRUE) |>
+    order(decreasing = decreasing, ...)
+  return(obj[o]) # `[.binom_confint`
   
 }
 
@@ -169,10 +224,12 @@ as_flextable.binom_confint <- function(x, ...) {
   conf.level <- attr(obj, which = 'conf.level', exact = TRUE)
   alternative <- attr(obj, which = 'alternative', exact = TRUE)
   
+  obj0 <- unclass(obj)
+  
   d <- data.frame(
     Count = sprintf(fmt = '%d / %d', x, n),
     Percentage = sprintf(fmt = '%.1f%%', 1e2*(x/n)),
-    sprintf(fmt = '(%.1f%%, %.1f%%)', 1e2*obj[,1L], 1e2*obj[,2L])
+    sprintf(fmt = '(%.1f%%, %.1f%%)', 1e2*obj0[,1L], 1e2*obj0[,2L])
   )
   names(d)[3L] <- sprintf(fmt = '%.f%% %s-Sided Exact\nConfidence Interval', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
   
