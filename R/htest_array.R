@@ -5,9 +5,9 @@
 #' 
 #' @description ..
 #' 
-#' @param X,Y two \link[base]{matrix}es with same number of rows
+#' @param X,Y two \link[base]{matrix}es with the same number of rows
 #' 
-#' @param ... additional parameters of \link[stats]{cor.test}
+#' @param ... additional parameters of function \link[stats]{cor.test}
 #' 
 #' @details .. 
 #' 
@@ -15,7 +15,7 @@
 #' Function [outer.cor.test()] returns a [htest_array] object.
 #' 
 #' @note
-#' This is a factorial structure of `xc`-by-`yc`
+#' This is a factorial structure of `xc`-by-`yc`,
 #' *not* a pairwise *combination* of `x`.
 #' 
 #' @examples 

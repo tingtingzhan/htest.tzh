@@ -8,9 +8,9 @@
 outer.cor.test(X, Y = X, ...)
 }
 \arguments{
-\item{X, Y}{two \link[base]{matrix}es with same number of rows}
+\item{X, Y}{two \link[base]{matrix}es with the same number of rows}
 
-\item{...}{additional parameters of \link[stats]{cor.test}}
+\item{...}{additional parameters of function \link[stats]{cor.test}}
 }
 \value{
 Function \code{\link[=outer.cor.test]{outer.cor.test()}} returns a \link{htest_array} object.
@@ -22,7 +22,7 @@ Function \code{\link[=outer.cor.test]{outer.cor.test()}} returns a \link{htest_a
 ..
 }
 \note{
-This is a factorial structure of \code{xc}-by-\code{yc}
+This is a factorial structure of \code{xc}-by-\code{yc},
 \emph{not} a pairwise \emph{combination} of \code{x}.
 }
 \examples{
