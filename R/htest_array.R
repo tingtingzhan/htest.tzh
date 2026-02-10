@@ -21,7 +21,7 @@
 #' @examples 
 #' list(
 #'  '`htest_array`' = outer.cor.test(swiss)
-#' ) |> rmd.tzh::render_(file = 'htest_array')
+#' ) |> fastmd::render_(file = 'htest_array')
 #' 
 #' @keywords internal
 #' @importFrom stats cor.test 
@@ -77,8 +77,8 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' 
 #' @keywords internal
 #' @importFrom flextable as_flextable set_caption
-#' @importFrom flextable.tzh as_flextable.matrix
-#' @importFrom rmd.tzh label_pvalue_sym
+#' @importFrom fastmd as_flextable.matrix
+#' @importFrom fastmd label_pvalue_sym
 #' @export
 as_flextable.htest_array <- function(x, which = c('estimate', 'p.value', 'p.adjust'), ...) {
   
@@ -142,8 +142,8 @@ print.htest_array <- function(x, ...) {
 #' 
 #' @keywords internal
 #' @importFrom methods new
-#' @importFrom rmd.tzh md_
-#' @importClassesFrom rmd.tzh md_lines
+#' @importFrom fastmd md_
+#' @importClassesFrom fastmd md_lines
 #' @export md_.htest_array
 #' @export
 md_.htest_array <- function(x, xnm, ...) {
@@ -165,7 +165,7 @@ md_.htest_array <- function(x, xnm, ...) {
 #' @param x a [htest_array] object
 #' 
 #' @keywords internal
-#' @importFrom flextable.tzh p_adjust_ p_adjust_.numeric
+#' @importFrom fastmd p_adjust_ p_adjust_.numeric
 #' @export p_adjust_.htest_array
 #' @export
 p_adjust_.htest_array <- function(x) {

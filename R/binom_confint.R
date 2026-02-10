@@ -270,11 +270,11 @@ print.binom_confint <- function(x, ...) {
 #' @examples
 #' list(
 #'  'State Region' = state.region |> binom_confint() |> sort()
-#' ) |> rmd.tzh::render_(file = 'binom_confint')
+#' ) |> fastmd::render_(file = 'binom_confint')
 #' @keywords internal
 #' @importFrom methods new
-#' @importClassesFrom rmd.tzh md_lines  
-#' @importFrom rmd.tzh md_
+#' @importClassesFrom fastmd md_lines  
+#' @importFrom fastmd md_
 #' @export md_.binom_confint
 #' @export
 md_.binom_confint <- function(x, xnm, ...) {
@@ -292,7 +292,7 @@ md_.binom_confint <- function(x, xnm, ...) {
   ) |> 
     new(Class = 'md_lines')
   
-  #c(z1, z2) # ?rmd.tzh::c.md_lines
+  #c(z1, z2) # ?fastmd::c.md_lines
   return(z2)
   
 }
