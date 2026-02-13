@@ -279,12 +279,7 @@ print.binom_confint <- function(x, ...) {
 #' @export
 md_.binom_confint <- function(x, xnm, ...) {
   
-  #z1 <- x$call$formula[[2L]] |> 
-  #  deparse1() |> 
-  #  sprintf(fmt = '@KaplanMeier58 estimates and curves of time-to-event endpoint **`%s`** are obtained using <u>**`R`**</u> package <u>**`survival`**</u>.') |>
-  #  new(Class = 'md_lines', package = 'survival', bibentry = KaplanMeier58())
-  
-  z2 <- c(
+  z1 <- c(
     '```{r}',
     '#| echo: false', 
     xnm |> sprintf(fmt = 'as_flextable.binom_confint(%s)'),
@@ -292,8 +287,7 @@ md_.binom_confint <- function(x, xnm, ...) {
   ) |> 
     new(Class = 'md_lines')
   
-  #c(z1, z2) # ?fastmd::c.md_lines
-  return(z2)
+  return(z1)
   
 }
 
