@@ -270,7 +270,7 @@ print.binom_confint <- function(x, ...) {
 #' @examples
 #' list(
 #'  'State Region' = state.region |> binom_confint() |> sort()
-#' ) |> fastmd::render_(file = 'binom_confint')
+#' ) |> fastmd::render2html(file = 'binom_confint')
 #' @keywords internal
 #' @importFrom methods new
 #' @importClassesFrom fastmd md_lines  

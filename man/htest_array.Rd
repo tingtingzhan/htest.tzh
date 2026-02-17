@@ -28,7 +28,7 @@ This is a factorial structure of \code{xc}-by-\code{yc},
 \examples{
 list(
  '`htest_array`' = outer.cor.test(swiss)
-) |> fastmd::render_(file = 'htest_array')
+) |> fastmd::render2html(file = 'htest_array')
 
 }
 \keyword{internal}

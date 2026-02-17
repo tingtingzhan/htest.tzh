@@ -19,6 +19,6 @@
 \examples{
 list(
  'State Region' = state.region |> binom_confint() |> sort()
-) |> fastmd::render_(file = 'binom_confint')
+) |> fastmd::render2html(file = 'binom_confint')
 }
 \keyword{internal}

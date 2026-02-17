@@ -21,7 +21,7 @@
 #' @examples 
 #' list(
 #'  '`htest_array`' = outer.cor.test(swiss)
-#' ) |> fastmd::render_(file = 'htest_array')
+#' ) |> fastmd::render2html(file = 'htest_array')
 #' 
 #' @keywords internal
 #' @importFrom stats cor.test 
