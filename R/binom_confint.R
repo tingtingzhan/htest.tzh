@@ -281,7 +281,6 @@ md_.binom_confint <- function(x, xnm, ...) {
   
   z1 <- c(
     '```{r}',
-    '#| echo: false', 
     xnm |> sprintf(fmt = 'as_flextable.binom_confint(%s)'),
     '```'
   ) |> 
