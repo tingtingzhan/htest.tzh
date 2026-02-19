@@ -21,7 +21,7 @@
 #' @examples 
 #' list(
 #'  '`htest_array`' = outer.cor.test(swiss)
-#' ) |> fastmd::render2html(file = 'htest_array')
+#' ) |> fastmd::render2html()
 #' 
 #' @keywords internal
 #' @importFrom stats cor.test 
@@ -148,13 +148,11 @@ print.htest_array <- function(x, ...) {
 #' @export
 md_.htest_array <- function(x, xnm, ...) {
   c(
-    '```{r}', 
     xnm |> sprintf(fmt = 'as_flextable(%s, which = \'estimate\')'),
     xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.value\')'),
-    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')'),
-    '```'
+    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')')
   ) |> 
-    new(Class = 'md_lines')
+    new(Class = 'md_lines', chunk.r = TRUE)
 }
 
 

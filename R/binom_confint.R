@@ -270,7 +270,7 @@ print.binom_confint <- function(x, ...) {
 #' @examples
 #' list(
 #'  'State Region' = state.region |> binom_confint() |> sort()
-#' ) |> fastmd::render2html(file = 'binom_confint')
+#' ) |> fastmd::render2html()
 #' @keywords internal
 #' @importFrom methods new
 #' @importClassesFrom fastmd md_lines  
@@ -278,16 +278,9 @@ print.binom_confint <- function(x, ...) {
 #' @export md_.binom_confint
 #' @export
 md_.binom_confint <- function(x, xnm, ...) {
-  
-  z1 <- c(
-    '```{r}',
-    xnm |> sprintf(fmt = 'as_flextable.binom_confint(%s)'),
-    '```'
-  ) |> 
-    new(Class = 'md_lines')
-  
-  return(z1)
-  
+  xnm |> 
+    sprintf(fmt = 'as_flextable(%s)') |> 
+    new(Class = 'md_lines', chunk.r = TRUE)
 }
 
 
