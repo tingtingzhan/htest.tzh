@@ -14,4 +14,9 @@
 \description{
 Convert \link{binom_confint} to \link[flextable]{flextable}
 }
+\examples{
+list(
+ 'State Region' = state.region |> binom_confint() |> sort()
+) |> fastmd::render2html()
+}
 \keyword{internal}

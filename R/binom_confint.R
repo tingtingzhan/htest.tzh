@@ -211,6 +211,10 @@ sort.binom_confint <- function(x, decreasing = TRUE, ...) {
 #' 
 #' @param ... ..
 #' 
+#' @examples
+#' list(
+#'  'State Region' = state.region |> binom_confint() |> sort()
+#' ) |> fastmd::render2html()
 #' @keywords internal
 #' @importFrom flextable as_flextable flextable autofit align vline
 #' @export as_flextable.binom_confint
@@ -257,25 +261,7 @@ print.binom_confint <- function(x, ...) {
 
 
 
-#' @title md_.binom_confint
-#' 
-#' @description ..
-#' 
-#' @param x a [binom_confint]
-#' 
-#' @param xnm ..
-#'  
-#' @param ... ..
-#' 
-#' @examples
-#' list(
-#'  'State Region' = state.region |> binom_confint() |> sort()
-#' ) |> fastmd::render2html()
-#' @keywords internal
-#' @importFrom methods new
-#' @importClassesFrom fastmd md_lines  
 #' @importFrom fastmd md_ md_flextable_
-#' @export md_.binom_confint
 #' @export
 md_.binom_confint <- md_flextable_
 
