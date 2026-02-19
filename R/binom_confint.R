@@ -274,14 +274,10 @@ print.binom_confint <- function(x, ...) {
 #' @keywords internal
 #' @importFrom methods new
 #' @importClassesFrom fastmd md_lines  
-#' @importFrom fastmd md_
+#' @importFrom fastmd md_ md_flextable_
 #' @export md_.binom_confint
 #' @export
-md_.binom_confint <- function(x, xnm, ...) {
-  xnm |> 
-    sprintf(fmt = 'as_flextable(%s)') |> 
-    new(Class = 'md_lines', chunk.r = TRUE)
-}
+md_.binom_confint <- md_flextable_
 
 
 
