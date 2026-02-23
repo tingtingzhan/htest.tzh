@@ -261,7 +261,6 @@ print.binom_confint <- function(x, ...) {
 
 
 
-#' @importFrom fastmd md_ md_flextable_
 #' @export
 md_.binom_confint <- md_flextable_
 

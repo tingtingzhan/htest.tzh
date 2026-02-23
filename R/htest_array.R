@@ -77,14 +77,19 @@ outer.cor.test <- function(X, Y = X, ...) {
 #' 
 #' @keywords internal
 #' @importFrom flextable as_flextable set_caption
-#' @importFrom fastmd as_flextable.matrix
-#' @importFrom fastmd label_pvalue_sym
 #' @export
-as_flextable.htest_array <- function(x, which = c('estimate', 'p.value', 'p.adjust'), ...) {
+as_flextable.htest_array <- function(
+    x, 
+    which = c('estimate', 'p.value', 'p.adjust'), 
+    ...
+) {
   
   match.arg(which) |>
     switch(EXPR = _, estimate = {
-      x$estimate |> 
+      z <- x$estimate 
+      z[] <- z |> 
+        label_number(accuracy = .01)() 
+      z |>
         as_flextable.matrix()
     }, p.value = {
       x$p.value |> 
@@ -94,9 +99,7 @@ as_flextable.htest_array <- function(x, which = c('estimate', 'p.value', 'p.adju
     }, p.adjust = {
       x |> 
         p_adjust_.htest_array() |> 
-        unclass() |> 
-        label_pvalue_sym()() |> 
-        as_flextable.matrix() |> 
+        as_flextable.p_adjust() |>
         set_caption(caption = 'Multiple Testing Adjusted p-values') 
     })
   
@@ -141,18 +144,31 @@ print.htest_array <- function(x, ...) {
 #' Function [md_.htest_array()] returns a \link[base]{character} \link[base]{vector}.
 #' 
 #' @keywords internal
-#' @importFrom methods new
-#' @importFrom fastmd md_
 #' @importClassesFrom fastmd md_lines
 #' @export md_.htest_array
 #' @export
 md_.htest_array <- function(x, xnm, ...) {
-  c(
-    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'estimate\')'),
-    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.value\')'),
-    xnm |> sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')')
-  ) |> 
+  
+  z1 <- xnm |> 
+    sprintf(fmt = 'as_flextable(%s, which = \'estimate\')') |>
     new(Class = 'md_lines', chunk.r = TRUE)
+  
+  z2 <- xnm |> 
+    sprintf(fmt = 'as_flextable(%s, which = \'p.value\')') |> 
+    new(Class = 'md_lines', chunk.r = TRUE)
+  
+  z3 <- xnm |> 
+    sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')') |>
+    new(Class = 'md_lines', chunk.r = TRUE, bibentry = c(
+      .hommel88(),
+      .hochberg88(),
+      .holm79(),
+      .benjamini_yekutieli01(),
+      .benjamini_hochberg95()
+    ))
+  
+  c(z1, z2, z3)
+  
 }
 
 
@@ -162,7 +178,6 @@ md_.htest_array <- function(x, xnm, ...) {
 #' @param x a [htest_array] object
 #' 
 #' @keywords internal
-#' @importFrom fastmd p_adjust_ p_adjust_.numeric
 #' @export p_adjust_.htest_array
 #' @export
 p_adjust_.htest_array <- function(x) {
@@ -170,9 +185,10 @@ p_adjust_.htest_array <- function(x) {
   dnm <- dimnames(pv0)
   pv <- c(pv0)
   names(pv) <- c(outer(dnm[[1L]], dnm[[2L]], FUN = \(...) paste(..., sep = ' & ')))
-  ret <- p_adjust_.numeric(pv) # 'matrix'
-  names(dimnames(ret)) <- c(x$method, '') # for ?as_flextable.matrix
-  return(ret)
+  p_adjust_.numeric(pv)
+  #ret <- p_adjust_.numeric(pv) # 'matrix'
+  #names(dimnames(ret)) <- c(x$method, '') # for ?as_flextable.matrix
+  #return(ret)
 }
 
 
