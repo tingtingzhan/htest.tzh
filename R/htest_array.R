@@ -158,14 +158,8 @@ md_.htest_array <- function(x, xnm, ...) {
     new(Class = 'md_lines', chunk.r = TRUE)
   
   z3 <- xnm |> 
-    sprintf(fmt = 'as_flextable(%s, which = \'p.adjust\')') |>
-    new(Class = 'md_lines', chunk.r = TRUE, bibentry = c(
-      .hommel88(),
-      .hochberg88(),
-      .holm79(),
-      .benjamini_yekutieli01(),
-      .benjamini_hochberg95()
-    ))
+    sprintf(fmt = 'p_adjust_(%s)') |>
+    md_.p_adjust(xnm = _)
   
   c(z1, z2, z3)
   
@@ -185,10 +179,8 @@ p_adjust_.htest_array <- function(x) {
   dnm <- dimnames(pv0)
   pv <- c(pv0)
   names(pv) <- c(outer(dnm[[1L]], dnm[[2L]], FUN = \(...) paste(..., sep = ' & ')))
-  p_adjust_.numeric(pv)
-  #ret <- p_adjust_.numeric(pv) # 'matrix'
-  #names(dimnames(ret)) <- c(x$method, '') # for ?as_flextable.matrix
-  #return(ret)
+  pv |> 
+    p_adjust_.numeric()
 }
 
 
