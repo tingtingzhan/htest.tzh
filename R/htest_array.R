@@ -24,7 +24,6 @@
 #' ) |> fastmd::render2html()
 #' 
 #' @keywords internal
-#' @importFrom stats cor.test 
 #' @name htest_array
 #' @export
 outer.cor.test <- function(X, Y = X, ...) {
@@ -99,7 +98,7 @@ as_flextable.htest_array <- function(
     }, p.adjust = {
       x |> 
         p_adjust_.htest_array() |> 
-        as_flextable.p_adjust() |>
+        as_flextable.p_adjust() |> # fastmd::as_flextable.p_adjust
         set_caption(caption = 'Multiple Testing Adjusted p-values') 
     })
   
@@ -132,22 +131,9 @@ print.htest_array <- function(x, ...) {
 
 
 
-#' @title Markdown Script of [htest_array]
-#' 
-#' @param x an [htest_array] object
-#' 
-#' @param xnm \link[base]{character} scalar, call of `x`
-#' 
-#' @param ... additional parameters, currently not in use
-#' 
-#' @returns 
-#' Function [md_.htest_array()] returns a \link[base]{character} \link[base]{vector}.
-#' 
-#' @keywords internal
 #' @importClassesFrom fastmd md_lines
-#' @export md_.htest_array
 #' @export
-md_.htest_array <- function(x, xnm, ...) {
+md_.htest_array <- function(x, xnm, bibentry. = bib_.p_adjust(), ...) {
   
   z1 <- xnm |> 
     sprintf(fmt = 'as_flextable(%s, which = \'estimate\')') |>
@@ -159,7 +145,7 @@ md_.htest_array <- function(x, xnm, ...) {
   
   z3 <- xnm |> 
     sprintf(fmt = 'p_adjust_(%s)') |>
-    md_.p_adjust(xnm = _)
+    md_flextable_(xnm = _, bibentry. = bibentry.) 
   
   c(z1, z2, z3)
   

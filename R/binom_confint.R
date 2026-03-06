@@ -21,7 +21,6 @@
 #' binom_confint(0:10, 10L, alternative = 'greater')
 #' @keywords internal
 #' @name binom_confint
-#' @importFrom stats binom.test
 #' @export
 binom_confint <- function(x, ...) UseMethod(generic = 'binom_confint')
   
