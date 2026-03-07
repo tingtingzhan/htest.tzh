@@ -6,6 +6,8 @@
 #' 
 #' @import scales
 #' 
+#' @import flextable
+#' 
 #' @import fastmd
 '_PACKAGE'
 

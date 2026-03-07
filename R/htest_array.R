@@ -66,16 +66,6 @@ outer.cor.test <- function(X, Y = X, ...) {
 }
 
 
-#' @title [as_flextable.htest_array]
-#' 
-#' @param x ..
-#' 
-#' @param which ..
-#' 
-#' @param ... ..
-#' 
-#' @keywords internal
-#' @importFrom flextable as_flextable set_caption
 #' @export
 as_flextable.htest_array <- function(
     x, 
@@ -89,16 +79,16 @@ as_flextable.htest_array <- function(
       z[] <- z |> 
         label_number(accuracy = .01)() 
       z |>
-        as_flextable.matrix()
+        as_flextable() # fastmd:::as_flextable.matrix
     }, p.value = {
       x$p.value |> 
         label_pvalue_sym()() |> 
-        as_flextable.matrix() |> 
+        as_flextable() |> # fastmd:::as_flextable.matrix
         set_caption(caption = 'p-values') 
     }, p.adjust = {
       x |> 
         p_adjust_.htest_array() |> 
-        as_flextable.p_adjust() |> # fastmd::as_flextable.p_adjust
+        as_flextable() |> # fastmd::as_flextable.p_adjust
         set_caption(caption = 'Multiple Testing Adjusted p-values') 
     })
   
@@ -106,12 +96,6 @@ as_flextable.htest_array <- function(
 
 
 
-#' @title print `htest_array`
-#' 
-#' @param x ..
-#' 
-#' @keywords internal
-#' @export print.htest_array
 #' @export
 print.htest_array <- function(x, ...) {
   
@@ -153,12 +137,6 @@ md_.htest_array <- function(x, xnm, bibentry. = bib_.p_adjust(), ...) {
 
 
 
-#' @title Adjusted \eqn{p}-values for [htest_array]
-#' 
-#' @param x a [htest_array] object
-#' 
-#' @keywords internal
-#' @export p_adjust_.htest_array
 #' @export
 p_adjust_.htest_array <- function(x) {
   pv0 <- x$p.value
