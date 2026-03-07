@@ -19,6 +19,11 @@
 #' binom_confint(0:10, 10L)
 #' binom_confint(0:10, 10L, alternative = 'less')
 #' binom_confint(0:10, 10L, alternative = 'greater')
+#' 
+#' list(
+#'  'State Region' = state.region |> binom_confint() |> sort()
+#' ) |> fastmd::render2html()
+#' 
 #' @keywords internal
 #' @name binom_confint
 #' @export
@@ -204,18 +209,7 @@ sort.binom_confint <- function(x, decreasing = TRUE, ...) {
 
 
 
-#' @title Convert [binom_confint] to \link[flextable]{flextable}
-#' 
-#' @param x a [binom_confint]
-#' 
-#' @param ... ..
-#' 
-#' @examples
-#' list(
-#'  'State Region' = state.region |> binom_confint() |> sort()
-#' ) |> fastmd::render2html()
-#' @keywords internal
-#' @export as_flextable.binom_confint
+
 #' @export
 as_flextable.binom_confint <- function(x, ...) {
   
@@ -254,14 +248,4 @@ print.binom_confint <- function(x, ...) {
     as_flextable.binom_confint(...) |>
     print() # ?flextable:::print.flextable
 }
-
-
-
-
-
-#' @export
-md_.binom_confint <- md_flextable_
-
-
-
 

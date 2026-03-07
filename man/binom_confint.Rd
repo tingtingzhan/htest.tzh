@@ -40,6 +40,11 @@ Clopper-Pearson exact binomial confidence interval.
 binom_confint(0:10, 10L)
 binom_confint(0:10, 10L, alternative = 'less')
 binom_confint(0:10, 10L, alternative = 'greater')
+
+list(
+ 'State Region' = state.region |> binom_confint() |> sort()
+) |> fastmd::render2html()
+
 state.region |> binom_confint()
 swiss |> is.na() |> binom_confint() # no missing
 airquality |> is.na() |> binom_confint() 
