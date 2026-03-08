@@ -227,19 +227,23 @@ as_flextable.binom_confint <- function(x, ...) {
     Percentage = sprintf(fmt = '%.1f%%', 1e2*(x/n)),
     sprintf(fmt = '(%.1f%%, %.1f%%)', 1e2*obj0[,1L], 1e2*obj0[,2L])
   )
-  names(d)[3L] <- sprintf(fmt = '%.f%% %s-Sided Exact\nConfidence Interval', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
+  names(d)[3L] <- sprintf(fmt = '%.f%% %s-Sided @ClopperPearson34 Exact Confidence Interval', 1e2*conf.level, switch(alternative, two.sided = 'Two', 'One'))
   
   nm <- rownames(obj)
   if (length(nm)) d <- data.frame(Name = nm, d, check.names = FALSE)
   
   d |>
     flextable() |>
-    autofit(part = 'all') |>
     align(j = if (length(nm)) 2:4 else 1:3, align = 'right', part = 'all') |>
-    vline(j = if (length(nm)) 1L else integer())
+    vline(j = if (length(nm)) 1L else integer()) |>
+    colformat_md(part = 'header') |>
+    autofit(part = 'all')
   
 }
 
+# fastmd::bib_
+#' @export
+bib_.binom_confint <- function(x) .clopper_pearson34()
 
 
 #' @export

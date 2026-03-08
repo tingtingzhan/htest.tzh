@@ -1,14 +1,17 @@
 
 
 #' @keywords internal
+
 #' @import methods
 #' @import stats
+#' @importFrom utils bibentry person
 #' 
-#' @import scales
-#' 
+#' @importFrom ftExtra colformat_md
 #' @import flextable
+#' @importFrom scales label_number
 #' 
-#' @import fastmd
+#' @importFrom fastmd bib_ md_ p_adjust_ bib_.p_adjust md_flextable_ label_pvalue_sym p_adjust_.numeric
+#' @importClassesFrom fastmd md_lines
 '_PACKAGE'
 
 
