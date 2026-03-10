@@ -129,7 +129,7 @@ md_.htest_array <- function(x, xnm, bibentry. = bib_.p_adjust(), ...) {
   
   z3 <- xnm |> 
     sprintf(fmt = 'p_adjust_(%s)') |>
-    md_flextable_(xnm = _, bibentry. = bibentry.) 
+    md_int(x = x, xnm = _, bibentry. = bibentry., engine = 'flextable') 
   
   c(z1, z2, z3)
   
