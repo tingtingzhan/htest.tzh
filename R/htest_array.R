@@ -115,17 +115,17 @@ print.htest_array <- function(x, ...) {
 
 
 
-#' @importClassesFrom fastmd md_lines
+#' @importClassesFrom fastmd md
 #' @export
 md_.htest_array <- function(x, xnm, bibentry. = bib_.p_adjust(), ...) {
   
   z1 <- xnm |> 
     sprintf(fmt = 'as_flextable(%s, which = \'estimate\')') |>
-    new(Class = 'md_lines', chunk.r = TRUE)
+    new(Class = 'md', chunk.r = TRUE)
   
   z2 <- xnm |> 
     sprintf(fmt = 'as_flextable(%s, which = \'p.value\')') |> 
-    new(Class = 'md_lines', chunk.r = TRUE)
+    new(Class = 'md', chunk.r = TRUE)
   
   z3 <- xnm |> 
     sprintf(fmt = 'p_adjust_(%s)') |>
